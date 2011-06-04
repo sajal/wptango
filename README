@@ -1,2 +1,9 @@
 create file local_settings.py and add api key to it
 WPTAPI = 'your_secret_api_key'
+
+
+./manage.py syncdb
+
+then login /admin/ to define "runnables"
+put /process/ in cronjob every minute or smthn
+thats it!
