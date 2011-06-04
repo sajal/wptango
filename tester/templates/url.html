@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://dl.dropbox.com/u/361747/pronto/dygraph-combined.js"></script>
+    </head>
+<body>
+<div id="graphdiv" style="width:1000px; height:300px;"></div>
+<script type="text/javascript">
+  g = new Dygraph(
+        document.getElementById("graphdiv"),  // containing div
+        "Time,ttfb, load, render\n" +                // the data series
+
+{% for test in tests %}
+"{{test.completed|date:"Y-m-d H:i:s"}}, {{test.first_ttfb}}, {{test.first_load}}, {{test.first_render}}\n" {% if forloop.last %},{% else %}+{% endif %}
+{% endfor %}
+        {
+            title: 'Pageload time for {{ url }}',
+            ylabel: 'Time (milliseconds)',
+            xlabel: 'Test run timestamp'
+        }                                   // the options
+      );
+</script>
+
+Last few tests:-<br>
+<table border=1>
+  <tr>
+    <th>Time completed</th>
+    <th colspan=3>First View</th>
+    <th colspan=3>Repeat View</th>
+  </tr>
+  <tr>
+    <th></th>
+    <th>ttfb</th>
+    <th>Start Render</th>
+    <th>Doc complete</th>
+    <th>ttfb</th>
+    <th>Start Render</th>
+    <th>Doc complete</th>
+  </tr>
+{% for test in tests %}
+<tr>
+  <td>
+    <a href="http://www.webpagetest.org/result/{{test.testid}}/" target="_blank">{{ test.completed|date:"Y-m-d H:i:s" }}</a>
+  </td>
+  <td>{{test.first_ttfb}}</td>
+  <td>{{test.first_render}}</td>
+  <td>{{test.first_load}}</td>
+  <td>{{test.repeat_ttfb}}</td>
+  <td>{{test.repeat_render}}</td>
+  <td>{{test.repeat_load}}</td>
+</tr>
+
+{% endfor %}
+</table>
+</body>
+</html>
