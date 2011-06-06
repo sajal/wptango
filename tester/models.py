@@ -61,6 +61,7 @@ class testrun(models.Model):
   completed = models.DateTimeField(null=True, blank=True)
   script = models.TextField(null=True, blank=True)
   blocks = models.TextField(null=True, blank=True, help_text="URL blocks, space delimeted - advanced usage")
+  location = models.CharField(max_length=50, default="Dulles_IE8", help_text="(unsupported currently)Which WPT location to use? see http://www.webpagetest.org/getLocations.php")
 
   class Meta:
     ordering = ["-submitted"]
@@ -69,7 +70,12 @@ class testrun(models.Model):
     if self.status != 1:
       raise Exception("Status is %s" %(self.status) )
     #print self.url
-    testurl = "http://www.webpagetest.org/runtest.php?url=%s&block=ga.js&f=json&private=1&k=%s" %(self.url, settings.WPTAPI)
+    testurl = "http://www.webpagetest.org/runtest.php?url=%s&block=ga.js&f=json&private=1&location=%s" %(self.url, self.location)
+    #TODO: implement callback rather than frequent poling
+    try:
+      testurl += '&k=' + settings.WPTAPI
+    except:
+      pass
     resp = json.loads(urllib.urlopen(testurl).read())
     self.testid = resp['data']['testId']
     self.status = 2
