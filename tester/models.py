@@ -91,6 +91,7 @@ class testrun(models.Model):
       soup = BeautifulStoneSoup(resp)
       status = soup.response.statustext.contents[0]
       if status == 'Ok':
+        #Todo: need to check median not average.. has more data
         self.first_ttfb = soup.response.data.average.firstview.ttfb.contents[0]
         self.first_load = soup.response.data.average.firstview.loadtime.contents[0]
         self.first_render = soup.response.data.average.firstview.render.contents[0]
