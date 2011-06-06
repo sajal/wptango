@@ -21,6 +21,7 @@ class runnable(models.Model):
   location = models.CharField(max_length=50, default="Dulles_IE8", help_text="(unsupported currently)Which WPT location to use? see http://www.webpagetest.org/getLocations.php")
   run_every = models.IntegerField(default=60, help_text="How often should this run, in minutes - Dont get greedy or sajal's unlimited api key may get banned!")
   script = models.TextField(null=True, blank=True, help_text="WPT script - advanced usage")
+  blocks = models.TextField(null=True, blank=True, help_text="URL blocks, space delimeted - advanced usage")
 
   def check_schedule(self):
     tests = testrun.objects.filter(runnable=self)
@@ -47,7 +48,7 @@ class runnable(models.Model):
 
 class testrun(models.Model):
   testid = models.CharField(max_length=50, null=True, blank=True)
-  status = models.IntegerField(default = 1, choices=STATUS_CHOICES)
+  status = models.IntegerField(default = 1, choices=STATUS_CHOICES, db_index=True)
   runnable = models.ForeignKey('runnable')
   first_ttfb = models.IntegerField(null=True, blank=True)
   first_load = models.IntegerField(null=True, blank=True)
@@ -56,10 +57,11 @@ class testrun(models.Model):
   repeat_load = models.IntegerField(null=True, blank=True)
   repeat_render = models.IntegerField(null=True, blank=True)
   url = models.CharField(max_length=250)
-  submitted = models.DateTimeField(auto_now_add=True)
+  submitted = models.DateTimeField(auto_now_add=True, db_index=True)
   completed = models.DateTimeField(null=True, blank=True)
   script = models.TextField(null=True, blank=True)
-  
+  blocks = models.TextField(null=True, blank=True, help_text="URL blocks, space delimeted - advanced usage")
+
   class Meta:
     ordering = ["-submitted"]
     
