@@ -76,18 +76,22 @@ class testrun(models.Model):
   def get_wpt_results(self):
     if self.status != 2:
       raise Exception("Status is %s" %(self.status) )
-    resulturl = "http://www.webpagetest.org/xmlResult/%s/" %(self.testid)
-    resp = urllib.urlopen(resulturl).read()
-    soup = BeautifulStoneSoup(resp)
-    status = soup.response.statustext.contents[0]
-    if status == 'Ok':
-      self.first_ttfb = soup.response.data.average.firstview.ttfb.contents[0]
-      self.first_load = soup.response.data.average.firstview.loadtime.contents[0]
-      self.first_render = soup.response.data.average.firstview.render.contents[0]
-      self.repeat_ttfb = soup.response.data.average.repeatview.ttfb.contents[0]
-      self.repeat_load = soup.response.data.average.repeatview.loadtime.contents[0]
-      self.repeat_render = soup.response.data.average.repeatview.render.contents[0]
-      self.completed = datetime.fromtimestamp(mktime_tz(parsedate_tz(soup.response.data.completed.contents[0])))
-      self.status = 4
-      self.save()
-      
+    print self.testid
+    try:
+      resulturl = "http://www.webpagetest.org/xmlResult/%s/" %(self.testid)
+      resp = urllib.urlopen(resulturl).read()
+      soup = BeautifulStoneSoup(resp)
+      status = soup.response.statustext.contents[0]
+      if status == 'Ok':
+        self.first_ttfb = soup.response.data.average.firstview.ttfb.contents[0]
+        self.first_load = soup.response.data.average.firstview.loadtime.contents[0]
+        self.first_render = soup.response.data.average.firstview.render.contents[0]
+        self.repeat_ttfb = soup.response.data.average.repeatview.ttfb.contents[0]
+        self.repeat_load = soup.response.data.average.repeatview.loadtime.contents[0]
+        self.repeat_render = soup.response.data.average.repeatview.render.contents[0]
+        self.completed = datetime.fromtimestamp(mktime_tz(parsedate_tz(soup.response.data.completed.contents[0])))
+        self.status = 4
+        self.save()
+        
+    except:
+      print "errr"
