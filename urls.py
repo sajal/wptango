@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     url(r'^$', 'wptango.tester.views.listurls', name='home'),
     url(r'^urlreport/(.*)/', 'wptango.tester.views.urlreport', name='urlreport'),
     url(r'^process/', 'wptango.tester.views.processurls', name='process'),
-    url(r'^addurl/', 'wptango.tester.views.addurl', name='addurl'),
+#    url(r'^addurl/', 'wptango.tester.views.addurl', name='addurl'),
     # url(r'^wptmon/', include('wptmon.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

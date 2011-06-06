@@ -24,7 +24,7 @@ def processurls(request):
     test.get_wpt_results()    
   return HttpResponse("OK")
   
-  
+"""
 def addurl(request):
   url = request.GET["url"]
   t = testrun()
@@ -33,3 +33,4 @@ def addurl(request):
   t.save()
   t.submit_to_wpt()
   return HttpResponse(t.testid)
+"""
