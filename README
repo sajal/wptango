@@ -1,4 +1,6 @@
-create file local_settings.py and add api key to it
+add tester to your python path.
+add 'tester' in installed apps
+Add this to your settings.py
 WPTAPI = 'your_secret_api_key'
 
 
@@ -7,3 +9,5 @@ WPTAPI = 'your_secret_api_key'
 then login /admin/ to define "runnables"
 put /process/ in cronjob every minute or smthn
 thats it!
+
+
