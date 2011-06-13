@@ -6,3 +6,10 @@ class Command(BaseCommand):
     help = 'posts new test requests to wpt, fetches results for previous ones. best to run it every min or smthn'
     def handle(self, *args, **options):
         print "RUNNING"
+        for r in runnable.objects.all():
+            r.check_schedule(verbose=True)
+        for test in testrun.objects.filter(status=1):
+            test.submit_to_wpt()
+        for test in testrun.objects.filter(status=2):
+            test.get_wpt_results()
+        
