@@ -9,6 +9,7 @@ class Command(BaseCommand):
         for r in runnable.objects.all():
             r.check_schedule(verbose=True)
         for test in testrun.objects.filter(status=1):
+            print test
             test.submit_to_wpt()
         for test in testrun.objects.filter(status=2):
             test.get_wpt_results()
