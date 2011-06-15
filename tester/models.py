@@ -116,3 +116,8 @@ class testrun(models.Model):
         except:
             #raise
             print "errr"
+            if (datetime.now() - self.submitted).total_seconds() > 60 * 60:
+                #mark as permanent failure!
+                print "marking as permanent FAIL!"
+                self.status = 3
+                self.save()
