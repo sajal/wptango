@@ -34,7 +34,7 @@ class runnable(models.Model):
             #Get timestamp of latest applied test
             t = tests[0]
             #print (datetime.now() - t.submitted).total_seconds()
-            if (datetime.now() - t.submitted).total_seconds() > self.run_every * 60:
+            if (datetime.now() - t.submitted).seconds > self.run_every * 60:
                 self.add_task(verbose = verbose)
     
     def add_task(self,verbose = False):
