@@ -20,10 +20,6 @@ class runnable(models.Model):
     url = models.CharField(max_length=250, help_text="URL to hit, this will be ignored for scripted tests, but pls fill it here.")
     location = models.CharField(max_length=50, default="Dulles_IE8", help_text="(unsupported currently)Which WPT location to use? see http://www.webpagetest.org/getLocations.php")
     run_every = models.IntegerField(default=60, help_text="How often should this run, in minutes - Dont get greedy or sajal's unlimited api key may get banned!")
-    
-    
-    
-    
     script = models.TextField(null=True, blank=True, help_text="WPT script - advanced usage")
     blocks = models.TextField(null=True, blank=True, help_text="URL blocks, space delimeted - advanced usage")
 
@@ -73,6 +69,8 @@ class testrun(models.Model):
     class Meta:
         ordering = ["-submitted"]
     
+    def __unicode__(self):
+        return "%s:%s" %(self.runnable.name, STATUS_CHOICES[self.status - 1][1])
     def submit_to_wpt(self):
         if self.status != 1:
             raise Exception("Status is %s" %(self.status) )
