@@ -3,16 +3,18 @@ from wptango.tester.models import *
 from django.http import HttpResponse
 from django.db import connection
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def listurls(request):
   r = runnable.objects.all()
-  return render_to_response('list.html', {'tests': r})
+  return render_to_response('list.html', {'tests': r, "user": request.user})
   
-  
+@login_required  
 def urlreport(request, id):
   r = runnable.objects.get(id=int(id))
   tests = testrun.objects.filter(runnable=r).filter(status=4)
-  return render_to_response('url.html', {'tests': tests, 'url': r.name})
+  return render_to_response('url.html', {'tests': tests, 'url': r.name, "user": request.user})
 
 
 def processurls(request):
