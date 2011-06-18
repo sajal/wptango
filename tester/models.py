@@ -6,6 +6,7 @@ from BeautifulSoup import BeautifulStoneSoup
 from email.utils import parsedate_tz, mktime_tz
 from datetime import datetime
 from django.conf import settings
+from django.contrib.auth.models import User
 
 STATUS_CHOICES = (
 (1, 'PENDING'),
@@ -22,6 +23,7 @@ class runnable(models.Model):
     run_every = models.IntegerField(default=60, help_text="How often should this run, in minutes - Dont get greedy or sajal's unlimited api key may get banned!")
     script = models.TextField(null=True, blank=True, help_text="WPT script - advanced usage")
     blocks = models.TextField(null=True, blank=True, help_text="URL blocks, space delimeted - advanced usage")
+    allowed_users = models.ManyToManyField(User, null=True, blank=True, help_text="Superusers see everything.")
 
     def check_schedule(self, verbose = False):
         tests = testrun.objects.filter(runnable=self)
