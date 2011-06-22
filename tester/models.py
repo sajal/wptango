@@ -47,6 +47,7 @@ class runnable(models.Model):
         t.url = self.url
         t.runnable = self
         t.script = self.script
+        t.location = self.location
         t.save()
         print "Adding %s" %(t)
         t.submit_to_wpt()
