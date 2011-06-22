@@ -8,14 +8,16 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def listurls(request):
     r = runnable.objects.all()
-    r = r.filter(allowed_users = request.user)
+    if not request.user.is_superuser:
+        r = r.filter(allowed_users = request.user)
     return render_to_response('list.html', {'tests': r, "user": request.user})
   
 @login_required  
 def urlreport(request, id):
     r = runnable.objects.get(id=int(id))
-    if request.user not in r.allowed_users.all():
-        return HttpResponseForbidden("Not Allowed!")
+    if not request.user.is_superuser:
+        if request.user not in r.allowed_users.all():
+            return HttpResponseForbidden("Not Allowed!")
     tests = testrun.objects.filter(runnable=r).filter(status=4)
     return render_to_response('url.html', {'tests': tests, 'url': r.name, "user": request.user})
 
