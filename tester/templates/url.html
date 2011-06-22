@@ -3,10 +3,13 @@
     <script type="text/javascript" src="http://dl.dropbox.com/u/361747/pronto/dygraph-combined.js"></script>
     </head>
 <body>
-<div id="graphdiv" style="width:1000px; height:300px;"></div>
+  <h1>First View</h1>
+<div id="first" style="width:1000px; height:300px;"></div>
+  <h1>Repeat View</h1>
+<div id="repeat" style="width:1000px; height:300px;"></div>
 <script type="text/javascript">
   g = new Dygraph(
-        document.getElementById("graphdiv"),  // containing div
+        document.getElementById("first"),  // containing div
         "Time,ttfb, load, render\n" +                // the data series
 
 {% for test in tests %}
@@ -18,6 +21,22 @@
             xlabel: 'Test run timestamp'
         }                                   // the options
       );
+
+  h = new Dygraph(
+        document.getElementById("repeat"),  // containing div
+        "Time,ttfb, load, render\n" +                // the data series
+
+{% for test in tests %}
+"{{test.completed|date:"Y-m-d H:i:s"}}, {{test.repeat_ttfb}}, {{test.repeat_load}}, {{test.repeat_render}}\n" {% if forloop.last %},{% else %}+{% endif %}
+{% endfor %}
+        {
+            title: 'Pageload time for {{ url }}',
+            ylabel: 'Time (milliseconds)',
+            xlabel: 'Test run timestamp'
+        }                                   // the options
+      );
+
+
 </script>
 
 Last few tests:-<br>
