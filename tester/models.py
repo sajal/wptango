@@ -80,6 +80,9 @@ class testrun(models.Model):
             #print self.url
         testurl = "http://www.webpagetest.org/runtest.php?url=%s&block=ga.js&f=json&private=1&location=%s" %(self.url, self.location)
         #TODO: implement callback rather than frequent poling
+        if self.script is not None:
+            if len(self.script) > 0:
+                testurl += "&script=%s" %(self.script)
         print testurl
         try:
             testurl += '&k=' + settings.WPTAPI
